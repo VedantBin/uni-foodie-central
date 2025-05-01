@@ -1,7 +1,13 @@
 
 import React from 'react';
 
-const PageHeader = ({ title, description, action }) => {
+interface PageHeaderProps {
+  title: string;
+  description?: string;
+  action?: React.ReactNode;
+}
+
+const PageHeader: React.FC<PageHeaderProps> = ({ title, description, action }) => {
   return (
     <div className="flex justify-between items-center mb-8 pb-4 border-b">
       <div>
