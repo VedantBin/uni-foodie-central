@@ -14,7 +14,7 @@ const Login = () => {
   const { login } = useAuth();
   const navigate = useNavigate();
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
 
@@ -22,7 +22,7 @@ const Login = () => {
       await login(email, password);
       toast.success('Login successful');
       navigate('/dashboard');
-    } catch (error: any) {
+    } catch (error) {
       toast.error(error.message || 'Login failed');
     } finally {
       setIsLoading(false);
@@ -30,7 +30,7 @@ const Login = () => {
   };
 
   // Prefilled login details for demo
-  const loginAsDemoUser = (role: string) => {
+  const loginAsDemoUser = (role) => {
     let demoEmail = '';
     let demoPassword = '';
     

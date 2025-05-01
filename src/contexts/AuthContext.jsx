@@ -1,25 +1,8 @@
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
-// Define types for our auth context
-type User = {
-  id: string;
-  name: string;
-  email: string;
-  role: 'admin' | 'cafe' | 'user';
-};
-
-type AuthContextType = {
-  user: User | null;
-  isAuthenticated: boolean;
-  isLoading: boolean;
-  login: (email: string, password: string) => Promise<void>;
-  register: (name: string, email: string, password: string, role: 'cafe' | 'user') => Promise<void>;
-  logout: () => void;
-};
-
 // Create the context with a default value
-const AuthContext = createContext<AuthContextType>({
+const AuthContext = createContext({
   user: null,
   isAuthenticated: false,
   isLoading: true,
@@ -35,27 +18,27 @@ const mockUsers = [
     name: 'Admin User',
     email: 'admin@university.edu',
     password: 'admin123',
-    role: 'admin' as const,
+    role: 'admin',
   },
   {
     id: '2',
     name: 'Cafe Owner',
     email: 'cafe@university.edu',
     password: 'cafe123',
-    role: 'cafe' as const,
+    role: 'cafe',
   },
   {
     id: '3',
     name: 'Student User',
     email: 'user@university.edu',
     password: 'user123',
-    role: 'user' as const,
+    role: 'user',
   },
 ];
 
-export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [user, setUser] = useState<User | null>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+export const AuthProvider = ({ children }) => {
+  const [user, setUser] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     // Check if user is already logged in via localStorage
@@ -66,7 +49,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setIsLoading(false);
   }, []);
 
-  const login = async (email: string, password: string) => {
+  const login = async (email, password) => {
     // In a real app, this would be an API call
     const foundUser = mockUsers.find(
       (u) => u.email === email && u.password === password
@@ -81,7 +64,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     localStorage.setItem('user', JSON.stringify(userWithoutPassword));
   };
 
-  const register = async (name: string, email: string, password: string, role: 'cafe' | 'user') => {
+  const register = async (name, email, password, role) => {
     // In a real app, this would be an API call
     const userExists = mockUsers.some((u) => u.email === email);
     if (userExists) {
